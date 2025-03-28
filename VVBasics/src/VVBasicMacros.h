@@ -52,11 +52,11 @@
 #elif !USING_MRC
 #   error "Must specify GC, ARC or MRC memory management"
 #endif
-#if USING_ARC
-#   if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
-#      error "ARC requires at least 10.6"
-#   endif
-#endif
+//#if USING_ARC
+//#   if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_6
+//#      error "ARC requires at least 10.6"
+//#   endif
+//#endif
 
 
 

@@ -28,7 +28,7 @@
 	MutLockArray		*returnMe = [[MutLockArray alloc] initWithCapacity:c];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe;
 }
 - (id) initWithCapacity:(NSInteger)c	{
 	pthread_rwlockattr_t		attr;
@@ -39,7 +39,7 @@
 		else
 			array = [[NSMutableArray alloc] initWithCapacity:c];
 		if (array == nil)	{
-			[self release];
+			self;
 			return nil;
 		}
 		pthread_rwlockattr_init(&attr);
@@ -51,7 +51,7 @@
 		return self;
 	}
 	
-	[self release];
+	self ;
 	return nil;
 }
 - (id) init	{
@@ -63,12 +63,12 @@
 	return returnMe;
 }
 - (void) dealloc	{
-	[self lockRemoveAllObjects];
+/*	[self lockRemoveAllObjects];
 	pthread_rwlock_destroy(&arrayLock);
 	if (array != nil)
 		[array release];
 	array = nil;
-	[super dealloc];
+	[super dealloc]; */
 }
 
 
@@ -95,7 +95,7 @@
 	NSMutableArray		*returnMe = [array mutableCopy];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe ;
 }
 - (NSMutableArray *) lockCreateArrayCopy	{
 	NSMutableArray		*returnMe = [NSMutableArray arrayWithCapacity:0];
@@ -366,7 +366,7 @@
 	if ((a==nil) || ([a count]<1))
 		return;
 	//@try	{
-		NSMutableIndexSet		*indicesToRemove = [[[NSMutableIndexSet alloc] init] autorelease];
+		NSMutableIndexSet		*indicesToRemove = [[NSMutableIndexSet alloc] init];
 		for (id anObj in a)	{
 			long			identicalIndex = [self indexOfIdenticalPtr:anObj];
 			if (identicalIndex != NSNotFound)

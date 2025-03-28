@@ -6,7 +6,7 @@
 #endif
 
 #import "MutLockArray.h"
-#import "ObjectHolder.h"
+//#import "ObjectHolder.h"
 
 
 
@@ -25,7 +25,7 @@ Instead of adding (and therefore retaining) objects to an array like my supercla
 + (id) arrayWithCapacity:(NSInteger)c;
 
 - (NSMutableArray *) createArrayCopy;
-- (NSMutableArray *) lockCreateArrayCopyFromObjects;
+- (NSMutableArray *) lockCreateArrayCopy;
 - (NSMutableArray *) createArrayCopyFromObjects;
 - (void) addObject:(id)o;
 - (void) addObjectsFromArray:(id)a;

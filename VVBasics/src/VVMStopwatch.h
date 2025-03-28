@@ -6,6 +6,7 @@
 #endif
 #import <mach/mach_time.h>
 #import <libkern/OSAtomic.h>
+#import <os/lock.h>
 
 
 ///	This class is used to measure how long it takes to do things; much easier to work with than NSDate.  Monotonic, uses mach_absolute_time().
@@ -14,7 +15,7 @@
 */
 @interface VVMStopwatch : NSObject	{
 	uint64_t			startTime;
-	OSSpinLock			timeLock;
+    os_unfair_lock		timeLock;
 	BOOL				paused;
 	double				prePauseTimeSinceStart;
 }

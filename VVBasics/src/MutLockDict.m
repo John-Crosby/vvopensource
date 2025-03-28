@@ -14,7 +14,7 @@
 	MutLockDict		*returnMe = [[MutLockDict alloc] initWithCapacity:0];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe;
 }
 + (id) dictionaryWithDict:(NSDictionary *)d	{
 	id			returnMe = [[MutLockDict alloc] initWithCapacity:0];
@@ -22,20 +22,20 @@
 		return nil;
 	if (d != nil)
 		[[returnMe dict] addEntriesFromDictionary:d];
-	return [returnMe autorelease];
+	return returnMe;
 }
 - (id) initWithCapacity:(NSInteger)c	{
 	if (c < 0)	{
-		[self release];
+		self;
 		return nil;
 	}
 	
 	pthread_rwlockattr_t		attr;
 	
 	if (self = [super init])	{
-		dict = [[NSMutableDictionary dictionaryWithCapacity:0] retain];
+		dict = [NSMutableDictionary dictionaryWithCapacity:0];
 		if (dict == nil)	{
-			[self release];
+			self;
 			return nil;
 		}
 		pthread_rwlockattr_init(&attr);
@@ -46,19 +46,19 @@
 		
 		return self;
 	}
-	[self release];
+	self;
 	return nil;
 }
 - (id) init	{
 	return [self initWithCapacity:0];
 }
 - (void) dealloc	{
-	[self lockRemoveAllObjects];
+/*	[self lockRemoveAllObjects];
 	pthread_rwlock_destroy(&dictLock);
 	if (dict != nil)
-		[dict release];
+		dict ;
 	dict = nil;
-	[super dealloc];
+	[super dealloc];*/
 }
 
 
@@ -80,7 +80,7 @@
 	NSMutableDictionary		*returnMe = [dict mutableCopy];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe ;
 }
 - (NSMutableDictionary *) lockCreateDictCopy	{
 	NSMutableDictionary		*returnMe = nil;
