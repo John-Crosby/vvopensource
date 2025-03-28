@@ -2,10 +2,10 @@
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else
-#import <Cocoa/Cocoa.h>
+//#import <Cocoa/Cocoa.h>
 #endif
 
-#import <VVBasics/VVBasics.h>
+#import "VVBasics.h"
 //#import <sys/types.h>
 //#import <sys/socket.h>
 #import <netinet/in.h>
@@ -31,19 +31,19 @@ the documentation here only covers the basics, the header file for this class is
 @interface OSCInPort : NSObject {
 	BOOL					deleted;	//	whether or not i'm deleted- ensures that socket gets closed
 	BOOL					bound;		//	whether or not the socket is bound
-	OSSpinLock				socketLock;
+	os_unfair_lock				socketLock;
 	int						sock;		//	socket file descriptor.  remember, everything in unix is files!
 	struct sockaddr_in		addr;		//	struct that describes *my* address (this is an in port)
 	unsigned short			port;		//	the port number i'm receiving from
 	unsigned char			*buf;	//	the socket gets data and dumps it here immediately
 	double					interval;	//	how many times/sec you want the thread to run
 	
-	OSSpinLock				scratchLock;
+	os_unfair_lock			scratchLock;
 	NSThread				*thread;
 	
 	NSString				*portLabel;		//!<the "name" of the port (added to distinguish multiple osc input ports for bonjour)
 	BOOL					zeroConfEnabled;	//	YES by default
-	OSSpinLock				zeroConfLock;
+	os_unfair_lock			zeroConfLock;
 	VVStopwatch				*zeroConfSwatch;	//	bonjour services need ~5 seconds between destroy/creation or the changes get ignored- this is how we track this time
 	NSNetService			*zeroConfDest;	//	bonjour service for publishing this input's address...only active if there's a portLabel!
 	

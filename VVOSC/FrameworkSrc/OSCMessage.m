@@ -318,7 +318,7 @@
 			case ']':			//	indicates the end of an array
 				if (arrayVals!=nil && [arrayVals count]>0)	{
 					OSCValue	*finishedVal = [arrayVals lastObject];
-					[finishedVal retain];
+					finishedVal;
 					[arrayVals removeLastObject];
 					
 					if ([arrayVals count]>0)
@@ -326,7 +326,7 @@
 					else
 						[returnMe addValue:finishedVal];
 					
-					[finishedVal release];
+					finishedVal;
 				}
 				break;
 			case 'E':			//	SMPTE timecode. AD-HOC DATA TYPE! ONLY SUPPORTED BY THIS FRAMEWORK!
@@ -340,20 +340,20 @@
 		}
 	}
 	//	return the msg- the bundle that parsed it will add an execution date (if appropriate) and send it to the port
-	return (returnMe==nil)?nil:[returnMe autorelease];
+	return (returnMe==nil)?nil:returnMe;
 }
 + (id) createWithAddress:(NSString *)a	{
 	OSCMessage		*returnMe = [[OSCMessage alloc] initWithAddress:a];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe;
 }
 
 
 - (id) initWithAddress:(NSString *)a	{
 	if (a == nil)	{
 		if (self != nil)
-			[self release];
+			self ;
 		return nil;
 	}
 	id			returnMe = nil;
@@ -369,7 +369,7 @@
 - (id) initFast:(NSString *)addr :(BOOL)addrHasWildcards :(unsigned int)qTxAddr :(unsigned short)qTxPort	{
 	self = [super init];
 	if (self != nil)	{
-		address = (addr==nil)?nil:[addr retain];
+		address = (addr==nil)?nil:addr ;
 		valueCount = 0;
 		value = nil;
 		valueArray = nil;
@@ -399,8 +399,8 @@
 }
 - (void) dealloc	{
 	//NSLog(@"%s",__func__);
-	if (address != nil)
-		[address release];
+/*	if (address != nil)
+		address;
 	address = nil;
 	if (value != nil)
 		[value release];
@@ -417,7 +417,7 @@
 		[msgInfo release];
 		msgInfo = nil;
 	}
-	[super dealloc];
+	[super dealloc]; */
 }
 
 - (void) addInt:(int)n	{
@@ -459,14 +459,14 @@
 		return;
 	//	if i haven't already stored a val, just store it at the single variable
 	if (valueCount == 0)
-		value = [n retain];
+		value = n;
 	//	else if there's more than 1 val, i'll be adding it to the array
 	else	{
 		//	if the array doesn't exist yet, create it (and clean up the existing val)
 		if (valueArray == nil)	{
-			valueArray = [[NSMutableArray arrayWithCapacity:0] retain];
+			valueArray = [NSMutableArray arrayWithCapacity:0];
 			[valueArray addObject:value];
-			[value release];
+			value ;
 			value = nil;
 		}
 		//	add the new val to the array
@@ -627,11 +627,11 @@
 }
 - (void) setTimeTag:(NSDate *)n	{
 	if (timeTag != nil)	{
-		[timeTag release];
+		timeTag;
 		timeTag = nil;
 	}
 	if (n != nil)	{
-		timeTag = [n retain];
+		timeTag = n;
 	}
 }
 
@@ -752,8 +752,8 @@
 
 - (void) setMsgInfo:(id)n	{
 	if (msgInfo != nil)
-		[msgInfo release];
-	msgInfo = (n==nil) ? nil : [n retain];
+		msgInfo;
+	msgInfo = (n==nil) ? nil : n;
 }
 - (id) msgInfo	{
 	return msgInfo;

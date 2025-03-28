@@ -1,6 +1,6 @@
 
 #import "OSCBundle.h"
-#import <VVBasics/VVBasicMacros.h>
+#import "VVBasicMacros.h"
 #import "OSCInPort.h"
 
 
@@ -83,7 +83,7 @@
 	OSCBundle		*returnMe = [[OSCBundle alloc] init];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe ;
 }
 + (id) createWithElement:(id)n	{
 	OSCBundle		*returnMe = [[OSCBundle alloc] init];
@@ -91,7 +91,7 @@
 		return nil;
 	if (n != nil)
 		[returnMe addElement:n];
-	return [returnMe autorelease];
+	return returnMe ;
 }
 + (id) createWithElementArray:(id)a	{
 	OSCBundle		*returnMe = [[OSCBundle alloc] init];
@@ -99,22 +99,22 @@
 		return nil;
 	if (a != nil)
 		[returnMe addElementArray:a];
-	return [returnMe autorelease];
+	return returnMe ;
 }
 - (id) init	{
 	if (self = [super init])	{
-		elementArray = [[NSMutableArray arrayWithCapacity:0] retain];
+		elementArray = [NSMutableArray arrayWithCapacity:0];
 		timeTag = nil;
 		return self;
 	}
-	[self release];
+	self ;
 	return nil;
 }
 
 - (void) dealloc	{
-	VVRELEASE(elementArray);
-	VVRELEASE(timeTag);
-	[super dealloc];
+//	VVRELEASE(elementArray);
+//	VVRELEASE(timeTag);
+//	[super dealloc];
 }
 
 - (void) addElement:(id)n	{

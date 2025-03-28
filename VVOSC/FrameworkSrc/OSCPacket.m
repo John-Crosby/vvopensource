@@ -78,7 +78,7 @@
 	OSCPacket		*returnMe = [[OSCPacket alloc] initWithContent:c];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe;
 }
 - (id) initWithContent:(id)c	{
 	//NSLog(@"%s ... %@",__func__,c);
@@ -88,7 +88,7 @@
 		payload = NULL;
 		
 		if (bufferLength < 1)	{
-			[self release];
+		//	self;
 			self = nil;
 		}
 		else	{
@@ -112,11 +112,11 @@
 }
 - (void) dealloc	{
 	//NSLog(@"%s",__func__);
-	bufferLength = 0;
-	if (payload != NULL)
-		free(payload);
-	payload = NULL;
-	[super dealloc];
+//	bufferLength = 0;
+//	if (payload != NULL)
+//		free(payload);
+//	payload = NULL;
+//	[super dealloc];
 }
 
 - (long) bufferLength	{

@@ -61,7 +61,7 @@
 		return self;
 	}
 	if (self != nil)
-		[self release];
+		self;
 	return nil;
 }
 - (id) initWithInPortClass:(Class)i outPortClass:(Class)o	{
@@ -81,28 +81,28 @@
 }
 - (void) _generalInit	{
 	//NSLog(@"%s",__func__);
-	inPortArray = [[MutLockArray arrayWithCapacity:0] retain];
-	outPortArray = [[MutLockArray arrayWithCapacity:0] retain];
+	inPortArray = [MutLockArray arrayWithCapacity:0];
+	outPortArray = [MutLockArray arrayWithCapacity:0];
 	delegate = nil;
 	inPortClass = [OSCInPort class];
-	inPortLabelBase = [@"VVOSC" retain];
+	inPortLabelBase = @"VVOSC";
 	outPortClass = [OSCOutPort class];
 }
 
 - (void) dealloc	{
-	if (zeroConfManager != nil)	{
-		[zeroConfManager release];
+/*	if (zeroConfManager != nil)	{
+		zeroConfManager;
 		zeroConfManager = nil;
 	}
 	if (inPortArray != nil)
-		[inPortArray release];
+		inPortArray;
 	inPortArray = nil;
 	if (outPortArray != nil)
 		[outPortArray release];
 	outPortArray = nil;
 	delegate = nil;
 	VVRELEASE(inPortLabelBase);
-	[super dealloc];
+	[super dealloc];*/
 }
 
 - (void) deleteAllInputs	{
@@ -187,7 +187,7 @@
 				[returnMe setDelegate:self];
 				[returnMe start];
 				[inPortArray addObject:returnMe];
-				[returnMe autorelease];
+				returnMe ;
 			}
 		}
 	[inPortArray unlock];
@@ -279,7 +279,7 @@
 			
 			if (returnMe != nil)	{
 				[outPortArray addObject:returnMe];
-				[returnMe autorelease];
+				returnMe;
 			}
 		}
 	[outPortArray unlock];
@@ -307,7 +307,7 @@
 	int				portIndex = 1234;
 	
 	while (portPtr == nil)	{
-		portPtr = [self createNewOutputToAddress:@"127.0.0.1" atPort:portIndex];
+		portPtr = [self createNewOutputToAddress:@"10.0.1.87" atPort:portIndex];
 		++portIndex;
 	}
 	

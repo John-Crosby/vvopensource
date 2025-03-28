@@ -15,13 +15,13 @@
 	OSCOutPort		*returnMe = [[OSCOutPort alloc] initWithAddress:a andPort:p];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe;
 }
 + (id) createWithAddress:(NSString *)a andPort:(unsigned short)p labelled:(NSString *)l	{
 	OSCOutPort		*returnMe = [[OSCOutPort alloc] initWithAddress:a andPort:p labelled:l];
 	if (returnMe == nil)
 		return nil;
-	return [returnMe autorelease];
+	return returnMe ;
 }
 
 
@@ -34,17 +34,17 @@
 		deleted = NO;
 		sock = -1;
 		port = p;
-		addressString = [a retain];
-		portLabel = [l retain];
+		addressString = a ;
+		portLabel = l ;
 		
 		if (a==nil || p<1024)	{
 			NSLog(@"\t\terr in %s, bailing. a was %@ p was %d",__func__,a,p);
-			[self release];
+			self ;
 			return nil;
 		}
 		else if (![self createSocket])	{
 			NSLog(@"\t\terr in %s, bailing.  no socket.",__func__);
-			[self release];
+			self ;
 			return nil;
 		}
 		
@@ -53,15 +53,15 @@
 }
 - (void) dealloc	{
 	//NSLog(@"%s",__func__);
-	if (!deleted)
-		[self prepareToBeDeleted];
-	if (addressString != nil)
-		[addressString release];
-	addressString = nil;
-	if (portLabel != nil)
-		[portLabel release];
-	portLabel = nil;
-	[super dealloc];
+//	if (!deleted)
+//		[self prepareToBeDeleted];
+//	if (addressString != nil)
+//		addressString ;
+//	addressString = nil;
+//	if (portLabel != nil)
+//		portLabel ;
+//	portLabel = nil;
+//	super;
 }
 - (void) prepareToBeDeleted	{
 	deleted = YES;
@@ -135,7 +135,6 @@
 	if ((deleted) || (sock == -1) || (p == nil))
 		return;
 	//	make sure the packet doesn't get released if its pool gets drained while i'm sending it
-	[p retain];
 	
 	int				numBytesSent = -1;
 	long			bufferSize = [p bufferLength];
@@ -143,13 +142,11 @@
 	
 	if (buff == NULL)	{
 		NSLog(@"\t\terr: packet's buffer was null");
-		[p release];
 		return;
 	}
 	//	send the packet's data to the destination
 	numBytesSent = (int)sendto(sock, buff, bufferSize, 0, (const struct sockaddr *)&addr, sizeof(addr));
 	//	make sure the packet can be freed...
-	[p release];
 }
 
 - (void) setAddressString:(NSString *)n	{
@@ -162,8 +159,8 @@
 	
 	sock = -1;
 	if (addressString != nil)
-		[addressString release];
-	addressString = [n retain];
+		addressString ;
+	addressString = n ;
 	[self createSocket];
 }
 - (void) setPort:(unsigned short)p	{
@@ -183,8 +180,8 @@
 	
 	sock = -1;
 	if (addressString != nil)
-		[addressString release];
-	addressString = [n retain];
+		addressString ;
+	addressString = n ;
 	port = p;
 	[self createSocket];
 }
@@ -209,11 +206,11 @@
 }
 - (void) setPortLabel:(NSString *)n	{
 	if (portLabel != nil)	{
-		[portLabel release];
+		portLabel ;
 	}
 	portLabel = nil;
 	if (n != nil)	{
-		portLabel = [n retain];
+		portLabel = n ;
 	}
 }
 

@@ -5,7 +5,7 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
-#import <VVBasics/VVBasics.h>
+#import "VVBasics.h"
 #import "OSCZeroConfDomain.h"
 #import <pthread.h>
 

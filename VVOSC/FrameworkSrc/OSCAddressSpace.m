@@ -25,9 +25,9 @@ id				_mainVVOSCAddressSpace;
 		[s appendString:@"\t"];
 	
 	//	write the description
-	OSSpinLockLock(&nameLock);
+    os_unfair_lock_lock(&nameLock);
 		[s appendFormat:@"<%@>",nodeName];
-	OSSpinLockUnlock(&nameLock);
+    os_unfair_lock_unlock(&nameLock);
 	
 	//	if there are contents
 	if ((nodeContents!=nil)&&([nodeContents count]>0))	{
@@ -198,7 +198,7 @@ id				_mainVVOSCAddressSpace;
 	if (self != nil)	{
 		addressSpace = self;
 		delegate = nil;
-		fullName = [@"/" retain];
+		fullName = @"/" ;
 #if TARGET_OS_IPHONE
 #else
 		//	register to receive notifications that the app's about to terminate so i can stop running
@@ -217,7 +217,7 @@ id				_mainVVOSCAddressSpace;
 	if (self != nil)	{
 		addressSpace = self;
 		delegate = nil;
-		fullName = [@"/" retain];
+		fullName = @"/" ;
 #if TARGET_OS_IPHONE
 #else
 		//	register to receive notifications that the app's about to terminate so i can stop running
@@ -239,9 +239,9 @@ id				_mainVVOSCAddressSpace;
 	//	_mainVVOSCAddressSpace = nil;
 #if TARGET_OS_IPHONE
 #else
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationWillTerminateNotification object:nil];
+//	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationWillTerminateNotification object:nil];
 #endif
-	[super dealloc];
+//	[super dealloc];
 }
 
 
@@ -321,14 +321,14 @@ id				_mainVVOSCAddressSpace;
 	OSCNode			*afterParent = nil;
 	//	retain the node i'm about to insert so it doesn't get released while this is happening
 	if (n != nil)
-		[n retain];
+		n ;
 	//	make sure the node i'm moving has been removed from its parent.  that's removed, NOT RELEASED!
 	if (n != nil)
 		beforeParent = [n parentNode];
 	if (beforeParent != nil)	{
 		MutNRLockArray		*delegates = [n delegateArray];
 		//	removing the local node will clear out its delegates (setting a node's parent to nil clears its delegates), so we store its delegates before doing so
-		NSMutableArray	*delegatesBeforeRemoval = [delegates lockCreateArrayCopyFromObjects];
+		NSMutableArray	*delegatesBeforeRemoval = [delegates lockCreateArrayCopy];
 		[beforeParent removeLocalNode:n];
 		//	re-apply any delegates that existed before removal
 		[delegates lockAddObjectsFromArray:delegatesBeforeRemoval];
@@ -337,7 +337,7 @@ id				_mainVVOSCAddressSpace;
 	if (n != nil)
 		[n _setNodeName:[a lastObject]];
 	//	find the new parent node for the destination
-	NSMutableArray		*parentAddressArray = [[a mutableCopy] autorelease];
+	NSMutableArray		*parentAddressArray = [a mutableCopy] ;
 	[parentAddressArray removeLastObject];
 	//	if the parent's address array is empty, the root level node is the parent
 	if ([parentAddressArray count] == 0)
@@ -385,7 +385,7 @@ id				_mainVVOSCAddressSpace;
 	*/
 	//	i retained the ndoe i'm about to insert earlier- release it now
 	if (n != nil)
-		[n release];
+		n ;
 }
 - (OSCNode *) findNodeForAddress:(NSString *)p createIfMissing:(BOOL)c	{
 	return [super findNodeForAddress:p createIfMissing:c];

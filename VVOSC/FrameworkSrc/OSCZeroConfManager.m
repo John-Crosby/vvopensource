@@ -23,7 +23,7 @@
 		oscManager = m;
 		serviceTypeString = t;
 		if (m == nil)	{
-			[self release];
+			self ;
 			self = nil;
 		}
 		else	{
@@ -36,7 +36,7 @@
 	return self;
 }
 - (void) dealloc	{
-	oscManager = nil;
+/*	oscManager = nil;
 	pthread_rwlock_destroy(&domainLock);
 	if (domainBrowser != nil)	{
 		[domainBrowser stop];
@@ -48,7 +48,7 @@
 		domainDict = nil;
 	}
 	VVRELEASE(serviceTypeString);
-	[super dealloc];
+	[super dealloc];*/
 }
 
 
